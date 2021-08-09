@@ -1,3 +1,4 @@
+from django.http.response import Http404
 from django.shortcuts import render
 from .models import Song
 from .serializers import SongSerializer
@@ -20,6 +21,12 @@ class Songlist(APIView):
         if serializer.is_valid():
            serializer.save()
            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)    
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+    def get_object(self, pk):
+        try:
+          return Songlist.objects.get(pk=pk)
+        except Songlist.DoesNotExist:
+           raise Http404 
 
 
