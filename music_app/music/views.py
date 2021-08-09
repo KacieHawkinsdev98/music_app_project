@@ -56,3 +56,12 @@ class SongDetail(APIView):
         serializer = SongSerializer(song)
         song.delete()
         return Response(serializer.data)
+
+
+class LikeSong(APIView):
+    def get(self, request, pk):
+        song = self.get(pk)
+        song.likes += 1
+        song.save()
+        serializer=SongSerializer(song)
+        return Response(serializer.data)
